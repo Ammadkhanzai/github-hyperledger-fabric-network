@@ -1,0 +1,59 @@
+{
+    "name": "vrsnetwork-excise",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Excise",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Excise": {
+            "mspid": "ExciseMSP",
+            "peers": [
+                "peer0.excise.vrs.com"
+            ],
+            "certificateAuthorities": [
+                "ca.excise.vrs.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.excise.vrs.com": {
+            "url": "grpcs://localhost:7051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICUDCCAfagAwIBAgIRAJOHLV9ACcMx8HBEoCHokRMwCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDmV4Y2lzZS52cnMuY29tMR0wGwYDVQQDExR0bHNj\nYS5leGNpc2UudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5leGNpc2UudnJzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuZXhjaXNlLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAS1\nhhEjopEIP7nt+xAsdTGYlCKVHcMVtmPEQ2Iw2JQi4QBCndC+3ft1aOadLwt7zQu5\n5jewBZMPzapNZk3VGJDlo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIMPq\n1FQGPoYFBq+OE1eZ5d7NscKrZNvlFBAoGt+4IY/jMAoGCCqGSM49BAMCA0gAMEUC\nIQDytgic9Qa5SXmejZloPjJjGdNkDDTXIYqT5LA3AZDqzgIgRoi4YEueItvZmuFT\nZ+8K9b6kr7+EgcY/18/xxf0FHpo=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.excise.vrs.com",
+                "hostnameOverride": "peer0.excise.vrs.com"
+            }
+        },
+        "peer1.excise.vrs.com": {
+            "url": "grpcs://localhost:8051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICUDCCAfagAwIBAgIRAJOHLV9ACcMx8HBEoCHokRMwCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDmV4Y2lzZS52cnMuY29tMR0wGwYDVQQDExR0bHNj\nYS5leGNpc2UudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5leGNpc2UudnJzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuZXhjaXNlLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAS1\nhhEjopEIP7nt+xAsdTGYlCKVHcMVtmPEQ2Iw2JQi4QBCndC+3ft1aOadLwt7zQu5\n5jewBZMPzapNZk3VGJDlo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIMPq\n1FQGPoYFBq+OE1eZ5d7NscKrZNvlFBAoGt+4IY/jMAoGCCqGSM49BAMCA0gAMEUC\nIQDytgic9Qa5SXmejZloPjJjGdNkDDTXIYqT5LA3AZDqzgIgRoi4YEueItvZmuFT\nZ+8K9b6kr7+EgcY/18/xxf0FHpo=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.excise.vrs.com",
+                "hostnameOverride": "peer1.excise.vrs.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.excise.vrs.com": {
+            "url": "https://localhost:9054",
+            "caName": "ca.excise.vrs.com",
+            "tlsCACerts": {
+                "pem": ["-----BEGIN CERTIFICATE-----\nMIICSTCCAe+gAwIBAgIQKMs7pqfXebFDnDtaepbJhTAKBggqhkjOPQQDAjBvMQsw\nCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy\nYW5jaXNjbzEXMBUGA1UEChMOZXhjaXNlLnZycy5jb20xGjAYBgNVBAMTEWNhLmV4\nY2lzZS52cnMuY29tMB4XDTIxMDEyMTA3MTEwMFoXDTMxMDExOTA3MTEwMFowbzEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDmV4Y2lzZS52cnMuY29tMRowGAYDVQQDExFjYS5l\neGNpc2UudnJzLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABOqG2waxwPcp\nO0A6lS+L95UJeZ9GwTSOrkqJM0jP/Jxjc4vl4jUNSLeQpBGonrIfPnnqpd1Cr+fn\nC4OCYlzCO5mjbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcD\nAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgPGebsjp94wsL\nrJgFqLUawsmXnGCb7RL6oVz5Ez0cRt4wCgYIKoZIzj0EAwIDSAAwRQIhAI1GZf8r\nHRQxMt8ej/M3GNlWK6QC8f7Q6Uy54OZS8qDdAiBKiX02c3IiPy1cgigGK5t8bucd\nhWdh5PEvj9DaJyrRpQ==\n-----END CERTIFICATE-----\n"]
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: orderer.vrs.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer
+        CommonName: orderer.vrs.com
+        SANS:
+          - "localhost"
+          - "127.0.0.1"
+
+            
+        
+        
+
+PeerOrgs:
+  - Name: Excise
+    Domain: excise.vrs.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 2
+      SANS:
+        - "localhost"
+        - "127.0.0.1"
+
+        
+
+    Users:
+      Count: 1
+    
+    
+
+  - Name: Manufacturer
+    Domain: manufacturer.vrs.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 2
+      SANS:
+        - "localhost"
+        - "127.0.0.1"
+
+        
+
+    Users:
+      Count: 1
+    
+  - Name: Dealer
+    Domain: dealer.vrs.com
+    EnableNodeOUs: true
+
+    Template:
+      Count: 2
+      SANS:
+        - "localhost"
+        - "127.0.0.1"
+
+        
+
+    Users:
+      Count: 1
+
+    
+    

@@ -1,0 +1,61 @@
+---
+name: vrsnetwork-${ORG}
+version: 1.0.0
+x-type: "hlfv1"
+channels:
+  vrschannel:
+    orderers:
+      - orderer.vrs.com
+    peers:
+      peer0.${ORG}.vrs.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer1.${ORG}.vrs.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+client:
+  organization: ${ORGC}
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  ${ORGC}:
+    mspid: ${ORGC}MSP
+    peers:
+    - peer0.${ORG}.vrs.com
+    certificateAuthorities:
+    - ca.${ORG}.vrs.com
+peers:
+  peer0.${ORG}.vrs.com:
+    url: grpcs://localhost:${P0PORT}
+    tlsCACerts:
+      pem: |
+          ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer0.${ORG}.vrs.com
+      hostnameOverride: peer0.${ORG}.vrs.com
+  peer1.${ORG}.vrs.com:
+    url: grpcs://localhost:${P1PORT}
+    tlsCACerts:
+      pem: |
+          ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer1.${ORG}.vrs.com
+      hostnameOverride: peer1.${ORG}.vrs.com
+certificateAuthorities:
+  ca.org${ORG}.vrs.com:
+    url: https://localhost:${CAPORT}
+    caName: ca.${ORG}.vrs.com
+    tlsCACerts:
+      pem: 
+        - |
+          ${CAPEM}
+    httpOptions:
+      verify: false

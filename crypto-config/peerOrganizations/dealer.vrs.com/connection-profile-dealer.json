@@ -1,0 +1,59 @@
+{
+    "name": "vrsnetwork-dealer",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Dealer",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Dealer": {
+            "mspid": "DealerMSP",
+            "peers": [
+                "peer0.dealer.vrs.com"
+            ],
+            "certificateAuthorities": [
+                "ca.dealer.vrs.com"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.dealer.vrs.com": {
+            "url": "grpcs://localhost:11051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICUDCCAfagAwIBAgIRAPhzlgH7STHqJQLnAyPfVncwCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDmRlYWxlci52cnMuY29tMR0wGwYDVQQDExR0bHNj\nYS5kZWFsZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5kZWFsZXIudnJzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuZGVhbGVyLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASO\nbQRav5pTQXx6G9EMD4LRXGFrR6so/UzmJzD4ASFhpPGIpFOfoJrNw+I6ZTPNciqe\nls0aTSNz3+dBARlRqS9do20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIF5i\n5krkbl/9eh72zdKj86gBYI8p0y0pRp/gJSpKf4UPMAoGCCqGSM49BAMCA0gAMEUC\nIE+o978lMYIxBdUH4CuqRO4C1+3tQNfDgnZWZiN6RpPvAiEA4ZqMSFcOr/J86x2y\n320iNWqlT8u2SqscXIXfoJf0wdw=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.dealer.vrs.com",
+                "hostnameOverride": "peer0.dealer.vrs.com"
+            }
+        },
+        "peer1.dealer.vrs.com": {
+            "url": "grpcs://localhost:12051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICUDCCAfagAwIBAgIRAPhzlgH7STHqJQLnAyPfVncwCgYIKoZIzj0EAwIwcjEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDmRlYWxlci52cnMuY29tMR0wGwYDVQQDExR0bHNj\nYS5kZWFsZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBa\nMHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T\nYW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5kZWFsZXIudnJzLmNvbTEdMBsGA1UEAxMU\ndGxzY2EuZGVhbGVyLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASO\nbQRav5pTQXx6G9EMD4LRXGFrR6so/UzmJzD4ASFhpPGIpFOfoJrNw+I6ZTPNciqe\nls0aTSNz3+dBARlRqS9do20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI\nKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIF5i\n5krkbl/9eh72zdKj86gBYI8p0y0pRp/gJSpKf4UPMAoGCCqGSM49BAMCA0gAMEUC\nIE+o978lMYIxBdUH4CuqRO4C1+3tQNfDgnZWZiN6RpPvAiEA4ZqMSFcOr/J86x2y\n320iNWqlT8u2SqscXIXfoJf0wdw=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer1.dealer.vrs.com",
+                "hostnameOverride": "peer1.dealer.vrs.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.dealer.vrs.com": {
+            "url": "https://localhost:11054",
+            "caName": "ca.dealer.vrs.com",
+            "tlsCACerts": {
+                "pem": ["-----BEGIN CERTIFICATE-----\nMIICSjCCAfCgAwIBAgIRAOVBuP7ebBJOfjvuoOiPbW0wCgYIKoZIzj0EAwIwbzEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xFzAVBgNVBAoTDmRlYWxlci52cnMuY29tMRowGAYDVQQDExFjYS5k\nZWFsZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBaMG8x\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMRcwFQYDVQQKEw5kZWFsZXIudnJzLmNvbTEaMBgGA1UEAxMRY2Eu\nZGVhbGVyLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAT+pZUI36LD\nK5YI9plYk6zVnqo74YUNsqXJtVCpF5TvCvqoUMJYK6Ujkw87isY3jODvEc1x6fHs\nfCBQQ0eD5w7mo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUH\nAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIB3esyKAfVQ+\nXVXXvEduvVf7/c+F8nFtTe2GfXE6MnclMAoGCCqGSM49BAMCA0gAMEUCIDiFtCG9\nMHffmaStAYjhAYjcIsmEjcYnUw/Tl3ANXFdBAiEAhRPMnzF62Jfxcx/Py1KM7qKQ\nhx1J8DGR/5C+l5U/Ujk=\n-----END CERTIFICATE-----\n"]
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

@@ -1,0 +1,10 @@
+version: 0
+tlsconfig:
+  certpath: ""
+  keypath: ""
+  peercacertpath: D:\fabric\github-hyperledger-fabric-network\crypto-config\peerOrganizations\manufacturer.vrs.com\users\User1@manufacturer.vrs.com\tls\ca.crt
+  timeout: 0s
+signerconfig:
+  mspid: ManufacturerMSP
+  identitypath: D:\fabric\github-hyperledger-fabric-network\crypto-config\peerOrganizations\manufacturer.vrs.com\users\User1@manufacturer.vrs.com\msp\signcerts\User1@manufacturer.vrs.com-cert.pem
+  keypath: D:\fabric\github-hyperledger-fabric-network\crypto-config\peerOrganizations\manufacturer.vrs.com\users\User1@manufacturer.vrs.com\msp\keystore\priv_sk

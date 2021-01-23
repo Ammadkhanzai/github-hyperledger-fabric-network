@@ -1,0 +1,475 @@
+version: '2'
+
+volumes:
+
+  orderer.vrs.com:
+  couchdb.peer0.excise.vrs.com:
+  couchdb.peer0.manufacturer.vrs.com:
+  couchdb.peer0.dealer.vrs.com:
+
+  peer0.excise.vrs.com:
+  peer1.excise.vrs.com:
+  peer0.manufacturer.vrs.com:
+  peer1.manufacturer.vrs.com:
+  peer0.dealer.vrs.com:
+  peer1.dealer.vrs.com:
+  
+  cli.excise:
+  cli.manufacturer:
+  cli.dealer:
+
+networks:
+  vrsnetwork:
+
+services:
+
+  orderer.vrs.com:
+    container_name: orderer.vrs.com
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+      - ./generatedConfig/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/orderer.vrs.com/orderers/orderer.vrs.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/orderer.vrs.com/orderers/orderer.vrs.com/tls:/var/hyperledger/orderer/tls 
+
+    ports:
+      - 7050:7050
+    networks:
+      - vrsnetwork
+
+
+  couchdb.peer0.excise.vrs.com:
+    container_name: couchdb.peer0.excise.vrs.com
+    image: couchdb:3.1
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    # hostname: couchdb.peer0.excise.vrs.com
+    dns_search: .
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
+    # for example map it to utilize Fauxton User Interface in dev environments.
+    ports:
+      - "5984:5984"
+    networks:
+      - vrsnetwork
+
+  peer0.excise.vrs.com:
+    container_name: peer0.excise.vrs.com
+    extends:
+      file:  peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.excise.vrs.com
+      - CORE_PEER_ADDRESS=peer0.excise.vrs.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.excise.vrs.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.excise.vrs.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.excise.vrs.com:7051
+      - CORE_PEER_LOCALMSPID=ExciseMSP
+
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.excise.vrs.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/excise.vrs.com/peers/peer0.excise.vrs.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/excise.vrs.com/peers/peer0.excise.vrs.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.excise.vrs.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+    depends_on:
+      - couchdb.peer0.excise.vrs.com
+      - orderer.vrs.com
+    networks:
+      - vrsnetwork
+
+  peer1.excise.vrs.com:
+    container_name: peer1.excise.vrs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.excise.vrs.com
+      - CORE_PEER_ADDRESS=peer1.excise.vrs.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.excise.vrs.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.excise.vrs.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.excise.vrs.com:8051
+      - CORE_PEER_LOCALMSPID=ExciseMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/excise.vrs.com/peers/peer1.excise.vrs.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/excise.vrs.com/peers/peer1.excise.vrs.com/tls:/etc/hyperledger/fabric/tls
+
+    ports:
+      - 8051:8051
+    networks:
+      - vrsnetwork
+
+
+  couchdb.peer0.manufacturer.vrs.com:
+    container_name: couchdb.peer0.manufacturer.vrs.com
+    image: couchdb:3.1
+    # hostname: couchdb.peer0.manufacturer.vrs.com
+    dns_search: .
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    ports:
+      - "7984:5984"
+    networks:
+      - vrsnetwork
+
+
+  peer0.manufacturer.vrs.com:
+    container_name: peer0.manufacturer.vrs.com
+    extends:
+      file:  peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.manufacturer.vrs.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+
+      - CORE_PEER_ID=peer0.manufacturer.vrs.com
+      - CORE_PEER_ADDRESS=peer0.manufacturer.vrs.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+
+      - CORE_PEER_CHAINCODEADDRESS=peer0.manufacturer.vrs.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.manufacturer.vrs.com:10051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.manufacturer.vrs.com:9051
+      - CORE_PEER_LOCALMSPID=ManufacturerMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/manufacturer.vrs.com/peers/peer0.manufacturer.vrs.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/manufacturer.vrs.com/peers/peer0.manufacturer.vrs.com/tls:/etc/hyperledger/fabric/tls
+    depends_on:
+      - couchdb.peer0.manufacturer.vrs.com
+      - orderer.vrs.com
+    ports:
+      - 9051:9051    
+    networks:
+      - vrsnetwork
+
+  peer1.manufacturer.vrs.com:
+    container_name: peer1.manufacturer.vrs.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+
+      - CORE_PEER_ID=peer1.manufacturer.vrs.com
+      - CORE_PEER_ADDRESS=peer1.manufacturer.vrs.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.manufacturer.vrs.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.manufacturer.vrs.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.manufacturer.vrs.com:10051
+      - CORE_PEER_LOCALMSPID=ManufacturerMSP
+
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/manufacturer.vrs.com/peers/peer1.manufacturer.vrs.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/manufacturer.vrs.com/peers/peer1.manufacturer.vrs.com/tls:/etc/hyperledger/fabric/tls
+
+
+    ports:
+      - 10051:10051
+    networks:
+      - vrsnetwork      
+
+  couchdb.peer0.dealer.vrs.com:
+    container_name: couchdb.peer0.dealer.vrs.com
+    image: couchdb:3.1
+    # hostname: couchdb.peer0.dealer.vrs.com
+    dns_search: .
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpw
+    ports:
+      - "9984:5984"
+    networks:
+      - vrsnetwork
+
+  peer0.dealer.vrs.com:
+    container_name: peer0.dealer.vrs.com
+    extends:
+      file:  peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.dealer.vrs.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+      
+      - CORE_PEER_ID=peer0.dealer.vrs.com
+      - CORE_PEER_ADDRESS=peer0.dealer.vrs.com:11051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.dealer.vrs.com:11052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.dealer.vrs.com:12051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.dealer.vrs.com:11051
+      - CORE_PEER_LOCALMSPID=DealerMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/dealer.vrs.com/peers/peer0.dealer.vrs.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/dealer.vrs.com/peers/peer0.dealer.vrs.com/tls:/etc/hyperledger/fabric/tls
+  
+    ports:
+      - 11051:11051
+    depends_on:
+      - couchdb.peer0.dealer.vrs.com
+      - orderer.vrs.com
+    networks:
+      - vrsnetwork 
+
+  peer1.dealer.vrs.com:
+    container_name: peer1.dealer.vrs.com
+    extends:
+      file:  peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.dealer.vrs.com
+      - CORE_PEER_ADDRESS=peer1.dealer.vrs.com:12051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.dealer.vrs.com:12052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:12052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.dealer.vrs.com:11051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.dealer.vrs.com:12051
+      - CORE_PEER_LOCALMSPID=DealerMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/dealer.vrs.com/peers/peer1.dealer.vrs.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/dealer.vrs.com/peers/peer1.dealer.vrs.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+      - 12051:12051
+    networks:
+      - vrsnetwork
+  
+  cli.excise:
+    container_name: cli.excise
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    dns_search: .
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+   
+      - CORE_PEER_ID=cli.excise
+      - CORE_PEER_ADDRESS=peer0.excise.vrs.com:7051
+      - CORE_PEER_LOCALMSPID=ExciseMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/excise.vrs.com/users/Admin@excise.vrs.com/msp
+      - TLS_ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/orderer.vrs.com/tlsca/tlsca.orderer.vrs.com-cert.pem
+
+      # enable one way TLS
+      - CORE_PEER_TLS_ENABLED=true
+
+
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/excise.vrs.com/peers/peer0.excise.vrs.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/excise.vrs.com/peers/peer0.excise.vrs.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/excise.vrs.com/peers/peer0.excise.vrs.com/tls/ca.crt
+      
+
+            # enable two way TLS
+      # - CORE_PEER_TLS_CLIENTAUTHREQUIRED=true     
+      # - CORE_PEER_TLS_CLIENTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/excise.vrs.com/users/Admin@excise.vrs.com/tls/client.crt
+      # - CORE_PEER_TLS_CLIENTKEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/excise.vrs.com/users/Admin@excise.vrs.com/tls/client.key
+
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./chaincode:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./generatedConfig:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+                
+
+    depends_on:
+      
+      - orderer.vrs.com
+      
+      - peer0.excise.vrs.com
+      - peer1.excise.vrs.com
+      
+    networks:
+      - vrsnetwork      
+  
+  cli.manufacturer:
+    container_name: cli.manufacturer
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    dns_search: .
+    environment:
+      - SYS_CHANNEL=$SYS_CHANNEL
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+    
+      - CORE_PEER_ID=cli.manufacturer
+      - CORE_PEER_ADDRESS=peer0.manufacturer.vrs.com:9051
+      - CORE_PEER_LOCALMSPID=ManufacturerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.vrs.com/users/Admin@manufacturer.vrs.com/msp
+      - TLS_ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/orderer.vrs.com/tlsca/tlsca.orderer.vrs.com-cert.pem
+
+      # enable one way TLS
+      - CORE_PEER_TLS_ENABLED=true
+
+
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.vrs.com/peers/peer0.manufacturer.vrs.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.vrs.com/peers/peer0.manufacturer.vrs.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.vrs.com/peers/peer0.manufacturer.vrs.com/tls/ca.crt
+      
+
+            # enable two way TLS
+      # - CORE_PEER_TLS_CLIENTAUTHREQUIRED=true     
+      # - CORE_PEER_TLS_CLIENTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.vrs.com/users/Admin@manufacturer.vrs.com/tls/client.crt
+      # - CORE_PEER_TLS_CLIENTKEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.vrs.com/users/Admin@manufacturer.vrs.com/tls/client.key
+
+
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./chaincode:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./generatedConfig:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+                
+
+    depends_on:
+      
+      - orderer.vrs.com
+      
+      - peer0.manufacturer.vrs.com
+      - peer1.manufacturer.vrs.com
+                
+    networks:
+      - vrsnetwork
+  cli.dealer:
+    container_name: cli.dealer
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    dns_search: .
+    environment:
+      - SYS_CHANNEL=$SYS_CHANNEL
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=DEBUG
+    
+      - CORE_PEER_ID=cli.dealer
+      - CORE_PEER_ADDRESS=peer0.dealer.vrs.com:11051
+      - CORE_PEER_LOCALMSPID=DealerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/dealer.vrs.com/users/Admin@dealer.vrs.com/msp
+      - TLS_ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/orderer.vrs.com/tlsca/tlsca.orderer.vrs.com-cert.pem
+
+      # enable one way TLS
+      - CORE_PEER_TLS_ENABLED=true
+
+
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/dealer.vrs.com/peers/peer0.dealer.vrs.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/dealer.vrs.com/peers/peer0.dealer.vrs.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/dealer.vrs.com/peers/peer0.dealer.vrs.com/tls/ca.crt
+      
+
+            # enable two way TLS
+      # - CORE_PEER_TLS_CLIENTAUTHREQUIRED=true     
+      # - CORE_PEER_TLS_CLIENTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/dealer.vrs.com/users/Admin@dealer.vrs.com/tls/client.crt
+      # - CORE_PEER_TLS_CLIENTKEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/dealer.vrs.com/users/Admin@dealer.vrs.com/tls/client.key
+
+
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./chaincode:/opt/gopath/src/github.com/chaincode
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./generatedConfig:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+                
+
+    depends_on:
+      
+      - orderer.vrs.com
+      
+      - peer0.dealer.vrs.com
+      - peer1.dealer.vrs.com
+                
+    networks:
+      - vrsnetwork
+
+  ca.manufacturer.vrs.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.manufacturer.vrs.com
+      - FABRIC_CA_SERVER_PORT=7054
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.manufacturer.vrs.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.manufacturer.vrs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/priv_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/manufacturer.vrs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/manufacturer.vrs.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+    container_name: ca.manufacturer.vrs.com
+    hostname: ca.manufacturer.vrs.com
+    networks:
+      - vrsnetwork
+
+  ca.excise.vrs.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.excise.vrs.com
+      - FABRIC_CA_SERVER_PORT=9054
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.excise.vrs.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.excise.vrs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/priv_sk
+    ports:
+      - "9054:9054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/excise.vrs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/excise.vrs.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+    container_name: ca.excise.vrs.com
+    hostname: ca.excise.vrs.com
+    networks:
+      - vrsnetwork
+
+  ca.dealer.vrs.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.dealer.vrs.com
+      - FABRIC_CA_SERVER_PORT=11054
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.dealer.vrs.com-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-tls/tlsca.dealer.vrs.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-tls/priv_sk
+    ports:
+      - "11054:11054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/dealer.vrs.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/dealer.vrs.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+    container_name: ca.dealer.vrs.com
+    hostname: ca.dealer.vrs.com
+    networks:
+      - vrsnetwork

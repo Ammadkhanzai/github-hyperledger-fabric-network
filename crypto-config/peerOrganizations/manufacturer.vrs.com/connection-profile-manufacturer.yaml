@@ -1,0 +1,106 @@
+---
+name: vrsnetwork-manufacturer
+version: 1.0.0
+x-type: "hlfv1"
+channels:
+  vrschannel:
+    orderers:
+      - orderer.vrs.com
+    peers:
+      peer0.manufacturer.vrs.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer1.manufacturer.vrs.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+client:
+  organization: Manufacturer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Manufacturer:
+    mspid: ManufacturerMSP
+    peers:
+    - peer0.manufacturer.vrs.com
+    certificateAuthorities:
+    - ca.manufacturer.vrs.com
+peers:
+  peer0.manufacturer.vrs.com:
+    url: grpcs://localhost:9051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICaDCCAg2gAwIBAgIQIf+5S8mAR4xUkdTPLUk1wTAKBggqhkjOPQQDAjB+MQsw
+          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+          YW5jaXNjbzEdMBsGA1UEChMUbWFudWZhY3R1cmVyLnZycy5jb20xIzAhBgNVBAMT
+          GnRsc2NhLm1hbnVmYWN0dXJlci52cnMuY29tMB4XDTIxMDEyMTA3MTEwMFoXDTMx
+          MDExOTA3MTEwMFowfjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWEx
+          FjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHTAbBgNVBAoTFG1hbnVmYWN0dXJlci52
+          cnMuY29tMSMwIQYDVQQDExp0bHNjYS5tYW51ZmFjdHVyZXIudnJzLmNvbTBZMBMG
+          ByqGSM49AgEGCCqGSM49AwEHA0IABDlUnBNwwU4vIWoYij3F24U9TEUp3VRqbKCU
+          Wk0OvaZf8HGeMatdWXQqifpMkzuKUcfeg2/Y6/QgYpeahq/T24yjbTBrMA4GA1Ud
+          DwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0T
+          AQH/BAUwAwEB/zApBgNVHQ4EIgQgWoee79FHIg18PXeMi25Hq3da48Ao8XzifAPn
+          lWy+A5IwCgYIKoZIzj0EAwIDSQAwRgIhANPeVcyJ2qalRoVs2YJfmQqXqaR8TbeU
+          BdUqARgfPwC8AiEAiF3srVDWZ+7WDw3EGqZTn/56Lix3ZbfLZvEIZQl1iCg=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer0.manufacturer.vrs.com
+      hostnameOverride: peer0.manufacturer.vrs.com
+  peer1.manufacturer.vrs.com:
+    url: grpcs://localhost:10051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICaDCCAg2gAwIBAgIQIf+5S8mAR4xUkdTPLUk1wTAKBggqhkjOPQQDAjB+MQsw
+          CQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZy
+          YW5jaXNjbzEdMBsGA1UEChMUbWFudWZhY3R1cmVyLnZycy5jb20xIzAhBgNVBAMT
+          GnRsc2NhLm1hbnVmYWN0dXJlci52cnMuY29tMB4XDTIxMDEyMTA3MTEwMFoXDTMx
+          MDExOTA3MTEwMFowfjELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWEx
+          FjAUBgNVBAcTDVNhbiBGcmFuY2lzY28xHTAbBgNVBAoTFG1hbnVmYWN0dXJlci52
+          cnMuY29tMSMwIQYDVQQDExp0bHNjYS5tYW51ZmFjdHVyZXIudnJzLmNvbTBZMBMG
+          ByqGSM49AgEGCCqGSM49AwEHA0IABDlUnBNwwU4vIWoYij3F24U9TEUp3VRqbKCU
+          Wk0OvaZf8HGeMatdWXQqifpMkzuKUcfeg2/Y6/QgYpeahq/T24yjbTBrMA4GA1Ud
+          DwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0T
+          AQH/BAUwAwEB/zApBgNVHQ4EIgQgWoee79FHIg18PXeMi25Hq3da48Ao8XzifAPn
+          lWy+A5IwCgYIKoZIzj0EAwIDSQAwRgIhANPeVcyJ2qalRoVs2YJfmQqXqaR8TbeU
+          BdUqARgfPwC8AiEAiF3srVDWZ+7WDw3EGqZTn/56Lix3ZbfLZvEIZQl1iCg=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer1.manufacturer.vrs.com
+      hostnameOverride: peer1.manufacturer.vrs.com
+certificateAuthorities:
+  ca.orgmanufacturer.vrs.com:
+    url: https://localhost:7054
+    caName: ca.manufacturer.vrs.com
+    tlsCACerts:
+      pem: 
+        - |
+          -----BEGIN CERTIFICATE-----
+          MIICYjCCAgigAwIBAgIRAK68wSM/0S0Mle3h9HS0eCcwCgYIKoZIzj0EAwIwezEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xHTAbBgNVBAoTFG1hbnVmYWN0dXJlci52cnMuY29tMSAwHgYDVQQD
+          ExdjYS5tYW51ZmFjdHVyZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAx
+          MTkwNzExMDBaMHsxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYw
+          FAYDVQQHEw1TYW4gRnJhbmNpc2NvMR0wGwYDVQQKExRtYW51ZmFjdHVyZXIudnJz
+          LmNvbTEgMB4GA1UEAxMXY2EubWFudWZhY3R1cmVyLnZycy5jb20wWTATBgcqhkjO
+          PQIBBggqhkjOPQMBBwNCAARL14959RmZqXXHp3w0M1iIw07PB9Nt2G0MaDjFmI5l
+          pvtCcQym25HIiS1rmHo+pJ12ONtn0DT7P91+Ga4hnAuVo20wazAOBgNVHQ8BAf8E
+          BAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQF
+          MAMBAf8wKQYDVR0OBCIEIECVfK8TZoocPUw+wbidhCHCW53qXU6h5Dx2r7v9u6Dv
+          MAoGCCqGSM49BAMCA0gAMEUCIQCKERNd9wpL0ZV8CkDaWsi3ugY97vf5YRD4KWkD
+          N9kLkQIgcG/F9OusbYWPSxFIyLI5az4z4QLt8OJxIdqNhF4EwP4=
+          -----END CERTIFICATE-----
+          
+    httpOptions:
+      verify: false

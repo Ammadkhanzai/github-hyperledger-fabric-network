@@ -1,0 +1,106 @@
+---
+name: vrsnetwork-dealer
+version: 1.0.0
+x-type: "hlfv1"
+channels:
+  vrschannel:
+    orderers:
+      - orderer.vrs.com
+    peers:
+      peer0.dealer.vrs.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer1.dealer.vrs.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+client:
+  organization: Dealer
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  Dealer:
+    mspid: DealerMSP
+    peers:
+    - peer0.dealer.vrs.com
+    certificateAuthorities:
+    - ca.dealer.vrs.com
+peers:
+  peer0.dealer.vrs.com:
+    url: grpcs://localhost:11051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICUDCCAfagAwIBAgIRAPhzlgH7STHqJQLnAyPfVncwCgYIKoZIzj0EAwIwcjEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xFzAVBgNVBAoTDmRlYWxlci52cnMuY29tMR0wGwYDVQQDExR0bHNj
+          YS5kZWFsZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBa
+          MHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T
+          YW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5kZWFsZXIudnJzLmNvbTEdMBsGA1UEAxMU
+          dGxzY2EuZGVhbGVyLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASO
+          bQRav5pTQXx6G9EMD4LRXGFrR6so/UzmJzD4ASFhpPGIpFOfoJrNw+I6ZTPNciqe
+          ls0aTSNz3+dBARlRqS9do20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI
+          KwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIF5i
+          5krkbl/9eh72zdKj86gBYI8p0y0pRp/gJSpKf4UPMAoGCCqGSM49BAMCA0gAMEUC
+          IE+o978lMYIxBdUH4CuqRO4C1+3tQNfDgnZWZiN6RpPvAiEA4ZqMSFcOr/J86x2y
+          320iNWqlT8u2SqscXIXfoJf0wdw=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer0.dealer.vrs.com
+      hostnameOverride: peer0.dealer.vrs.com
+  peer1.dealer.vrs.com:
+    url: grpcs://localhost:12051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIICUDCCAfagAwIBAgIRAPhzlgH7STHqJQLnAyPfVncwCgYIKoZIzj0EAwIwcjEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xFzAVBgNVBAoTDmRlYWxlci52cnMuY29tMR0wGwYDVQQDExR0bHNj
+          YS5kZWFsZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBa
+          MHIxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1T
+          YW4gRnJhbmNpc2NvMRcwFQYDVQQKEw5kZWFsZXIudnJzLmNvbTEdMBsGA1UEAxMU
+          dGxzY2EuZGVhbGVyLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASO
+          bQRav5pTQXx6G9EMD4LRXGFrR6so/UzmJzD4ASFhpPGIpFOfoJrNw+I6ZTPNciqe
+          ls0aTSNz3+dBARlRqS9do20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYI
+          KwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIF5i
+          5krkbl/9eh72zdKj86gBYI8p0y0pRp/gJSpKf4UPMAoGCCqGSM49BAMCA0gAMEUC
+          IE+o978lMYIxBdUH4CuqRO4C1+3tQNfDgnZWZiN6RpPvAiEA4ZqMSFcOr/J86x2y
+          320iNWqlT8u2SqscXIXfoJf0wdw=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer1.dealer.vrs.com
+      hostnameOverride: peer1.dealer.vrs.com
+certificateAuthorities:
+  ca.orgdealer.vrs.com:
+    url: https://localhost:11054
+    caName: ca.dealer.vrs.com
+    tlsCACerts:
+      pem: 
+        - |
+          -----BEGIN CERTIFICATE-----
+          MIICSjCCAfCgAwIBAgIRAOVBuP7ebBJOfjvuoOiPbW0wCgYIKoZIzj0EAwIwbzEL
+          MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
+          cmFuY2lzY28xFzAVBgNVBAoTDmRlYWxlci52cnMuY29tMRowGAYDVQQDExFjYS5k
+          ZWFsZXIudnJzLmNvbTAeFw0yMTAxMjEwNzExMDBaFw0zMTAxMTkwNzExMDBaMG8x
+          CzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g
+          RnJhbmNpc2NvMRcwFQYDVQQKEw5kZWFsZXIudnJzLmNvbTEaMBgGA1UEAxMRY2Eu
+          ZGVhbGVyLnZycy5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAT+pZUI36LD
+          K5YI9plYk6zVnqo74YUNsqXJtVCpF5TvCvqoUMJYK6Ujkw87isY3jODvEc1x6fHs
+          fCBQQ0eD5w7mo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUH
+          AwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIB3esyKAfVQ+
+          XVXXvEduvVf7/c+F8nFtTe2GfXE6MnclMAoGCCqGSM49BAMCA0gAMEUCIDiFtCG9
+          MHffmaStAYjhAYjcIsmEjcYnUw/Tl3ANXFdBAiEAhRPMnzF62Jfxcx/Py1KM7qKQ
+          hx1J8DGR/5C+l5U/Ujk=
+          -----END CERTIFICATE-----
+          
+    httpOptions:
+      verify: false

@@ -1,0 +1,154 @@
+
+name: 'vrs.com.connection.profile.org'
+version: '1.0'
+channels:
+  vrschannel:
+    orderers:
+    - orderer.vrs.com
+    peers:
+      peer0.manufacturer.vrs.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer1.manufacturer.vrs.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer0.excise.vrs.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer1.excise.vrs.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer0.dealer.vrs.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+      peer1.dealer.vrs.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+        discover: true
+organizations:
+  Manufacturer:
+    mspid: ManufacturerMSP
+    peers:
+      - peer0.manufacturer.vrs.com
+      - peer1.manufacturer.vrs.com
+    certificateAuthorities:
+      - ca.manufacturer.vrs.com
+    adminPrivateKey:
+      path: ./peerOrganizations/manufacturer.vrs.com/users/Admin@manufacturer.vrs.com/msp/keystore/priv_sk
+    signedCert:
+      path: ./peerOrganizations/manufacturer.vrs.com/users/Admin@manufacturer.vrs.com/msp/signcerts/Admin@manufacturer.vrs.com-cert.pem
+  Excise:
+    mspid: ExciseMSP
+    peers:
+      - peer0.excise.vrs.com
+      - peer1.excise.vrs.com
+    certificateAuthorities:
+      - ca.excise.vrs.com
+    adminPrivateKey:
+      path: ./peerOrganizations/excise.vrs.com/users/Admin@excise.vrs.com/msp/keystore/priv_sk
+    signedCert:
+      path: ./peerOrganizations/excise.vrs.com/users/Admin@excise.vrs.com/msp/signcerts/Admin@excise.vrs.com-cert.pem
+  Dealer:
+    mspid: DealerMSP
+    peers:
+      - peer0.dealer.vrs.com
+      - peer1.dealer.vrs.com
+    certificateAuthorities:
+      - ca.dealer.vrs.com
+    adminPrivateKey:
+      path: ./peerOrganizations/dealer.vrs.com/users/Admin@dealer.vrs.com/msp/keystore/priv_sk
+    signedCert:
+      path: ./peerOrganizations/dealer.vrs.com/users/Admin@dealer.vrs.com/msp/signcerts/Admin@dealer.vrs.com-cert.pem
+orderers:
+  orderer.vrs.com:
+    url: grpcs://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.vrs.com
+      grpc-max-send-message-length: 4194304
+    tlsCACerts:
+      path: ./ordererOrganizations/vrs.com/orderers/orderer.vrs.com/msp/tlscacerts/tlsca.vrs.com-cert.pem
+peers:
+  peer0.manufacturer.vrs.com:
+    url: grpcs://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.manufacturer.vrs.com
+    tlsCACerts:
+      path: ./peerOrganizations/manufacturer.vrs.com/peers/peer0.manufacturer.vrs.com/msp/tlscacerts/tlsca.manufacturer.vrs.com-cert.pem
+  peer1.manufacturer.vrs.com:
+    url: grpcs://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer1.manufacturer.vrs.com
+    tlsCACerts:
+      path: ./peerOrganizations/manufacturer.vrs.com/peers/peer1.manufacturer.vrs.com/msp/tlscacerts/tlsca.manufacturer.vrs.com-cert.pem
+  peer0.excise.vrs.com:
+    url: grpcs://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.excise.vrs.com
+    tlsCACerts:
+      path: ./peerOrganizations/excise.vrs.com/peers/peer0.excise.vrs.com/msp/tlscacerts/tlsca.excise.vrs.com-cert.pem
+  peer1.excise.vrs.com:
+    url: grpcs://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.excise.vrs.com
+    tlsCACerts:
+      path: ./peerOrganizations/excise.vrs.com/peers/peer1.excise.vrs.com/msp/tlscacerts/tlsca.excise.vrs.com-cert.pem
+  peer0.dealer.vrs.com:
+    url: grpcs://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer0.dealer.vrs.com
+    tlsCACerts:
+      path: ./peerOrganizations/dealer.vrs.com/peers/peer0.dealer.vrs.com/msp/tlscacerts/tlsca.dealer.vrs.com-cert.pem
+  peer1.excise.vrs.com:
+    url: grpcs://localhost:12051
+    grpcOptions:
+      ssl-target-name-override: peer1.dealer.vrs.com
+    tlsCACerts:
+      path: ./peerOrganizations/dealer.vrs.com/peers/peer1.dealer.vrs.com/msp/tlscacerts/tlsca.dealer.vrs.com-cert.pem
+certificateAuthorities:
+  ca.manufacturer.vrs.com:
+    url: https://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./peerOrganizations/manufacturer.vrs.com/ca/ca.manufacturer.vrs.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.manufacturer.vrs.com
+  ca.excise.vrs.com:
+    url: https://localhost:9054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./peerOrganizations/excise.vrs.com/ca/ca.excise.vrs.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.excise.vrs.com
+  ca.dealer.vrs.com:
+    url: https://localhost:11054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./peerOrganizations/dealer.vrs.com/ca/ca.dealer.vrs.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.dealer.vrs.com
