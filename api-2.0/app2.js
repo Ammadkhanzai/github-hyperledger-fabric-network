@@ -10,7 +10,11 @@ const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 const bearerToken = require('express-bearer-token');
 const cors = require('cors');
-const constants = require('./config/constants.json')
+const constants = require('./config/constants.json');
+
+const { Gateway } = require('fabric-network');
+
+
 
 const host = process.env.HOST || constants.host;
 const port = process.env.PORT || constants.port;
@@ -190,12 +194,23 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', async function (req
         }
 
         let message = await helper.invokeTransaction(channelName, chaincodeName, fcn, args, req.username, req.orgname );
-        console.log(`message result is : ${message}`)
+        // console.log(`message result is : ${message}`)
+        // console.log(`message result is : ${JSON.parse(message)}`)
 
         const response_payload = {
             result: message,
         }
-        res.send(response_payload);
+        if(message.hasOwnProperty('result')){
+            console.log('this running');
+            res.send(message.result);
+            
+        }else{
+            console.log('that running');
+            res.send(response_payload);
+        }
+        // console.log(message.hasOwnProperty('result'));
+        // res.send(response_payload);
+        
 
     } catch (error) {
         const response_payload = {
@@ -318,3 +333,5 @@ app.get('/qscc/channels/:channelName/chaincodes/:chaincodeName', async function 
         res.send(response_payload)
     }
 });
+
+

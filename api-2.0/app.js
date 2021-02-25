@@ -139,7 +139,7 @@ app.post('/users/login', async function (req, res) {
     }, app.get('secret'));
 
     let isUserRegistered = await helper.isUserRegistered(username, orgName);
-
+    // let isUserRegistered = true;
     if (isUserRegistered) {
         res.json({ success: true, message: { token: token } });
 

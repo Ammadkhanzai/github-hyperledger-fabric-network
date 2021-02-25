@@ -90,14 +90,18 @@ exports.invokeTransaction = async (channelName, chaincodeName, fcn, args, userID
             const network = await gateway.getNetwork(channelName);
             const contract = network.getContract(chaincodeName);
 
-            let result
+            let result;
             let message;
             if (fcn === "CreateVehical") {
-                result = await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4], args[5]);
+                await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4], args[5]);
                 message = `Successfully added the vehical asset with key ${args[0]}`;
+                let response = {
+                    message: message,    
+                }
+                return response;
             }
             if(fcn === "DeleteVehical"){
-                result = await contract.submitTransaction(fcn, args[0]);
+                await contract.submitTransaction(fcn, args[0]);
                 message = `Successfully deleted the vehical asset with key ${args[0]}`;
             }
             if(fcn === "ReadAsset"){
@@ -105,7 +109,7 @@ exports.invokeTransaction = async (channelName, chaincodeName, fcn, args, userID
                 message = `Successfully Get the vehical asset with key ${args[0]}`;
             }
             if(fcn === "TransferToDealer"){
-                result = await contract.submitTransaction(fcn, args[0],args[1]);
+                await contract.submitTransaction(fcn, args[0],args[1]);
                 message = `Successfully transfer the vehical asset from Manufacturer to Dealer with key ${args[0]}`;
             }
             if(fcn === "ReceiveFromManufacturer"){
@@ -113,19 +117,19 @@ exports.invokeTransaction = async (channelName, chaincodeName, fcn, args, userID
                 message = `Successfully receive the vehical asset from Manufacturer to Dealer with key ${args[0]}`;
             }
             if(fcn === "TransferToOwner"){
-                result = await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4], args[5]);
+                await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4], args[5]);
                 message = `Successfully transfer the vehical asset from Dealer to Owner with key ${args[0]}`;
             }
             if(fcn === "ReceiveFromDealer"){
-                result = await contract.submitTransaction(fcn, args[0]);
+                await contract.submitTransaction(fcn, args[0]);
                 message = `Successfully receive the vehical asset from Dealer to Owner with key ${args[0]}`;
             }
             if(fcn === "ChangeOwner"){
-                result = await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4] );
+                await contract.submitTransaction(fcn, args[0], args[1], args[2], args[3], args[4] );
                 message = `Successfully transfer the vehical asset from Previous Owner to New Owner with key ${args[0]}`;
             }
             if(fcn === "ReceiveFromOwner"){
-                result = await contract.submitTransaction(fcn, args[0]);
+                await contract.submitTransaction(fcn, args[0]);
                 message = `Successfully receive the vehical asset from Previous Owner to New Owner with key ${args[0]}`;
             }
             if(fcn === "QueryAssetsByOwner"){
@@ -144,8 +148,11 @@ exports.invokeTransaction = async (channelName, chaincodeName, fcn, args, userID
                 result = await contract.evaluateTransaction(fcn);
                 message = `Get All the Vehical Asset exist`;
             }
-
-            result = JSON.parse(result.toString());
+            if(fcn === "GetQueryResultForQueryString"){
+                result = await contract.evaluateTransaction(fcn,args[0]);
+                message = `Get  GetQueryResultForQueryString`;
+            }
+            // result = JSON.parse(result.toString());
             let response = {
                 message: message,
                 result
@@ -158,7 +165,14 @@ exports.invokeTransaction = async (channelName, chaincodeName, fcn, args, userID
     } catch (error) {
 
         console.log(`Getting error: ${error}`)
-        return error.message
+        
+        // return error.message
+        let response = {
+            status: 404,
+            'content':'Error catch',
+            'error':error,
+        }
+        return response;
 
     }
 }

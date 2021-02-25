@@ -1,0 +1,2 @@
+Installed chaincodes on peer:
+Package ID: vrschaincode_1:7069729f6a45c2ee2fef0ebaff1c82b988193adb70e1e41ebc839d44e393de47, Label: vrschaincode_1
